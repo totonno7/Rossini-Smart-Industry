@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>Rossini - Smart Industry</title>
     
     <link rel="icon" type="image/png" href="img/Simbolo-rossini-b.png">
@@ -16,6 +16,9 @@
             --gold-brand: #c6a763;
             --gold-glow: rgba(198,  167, 99, 0.4);
             --custom-bg: #e4dacd;
+            --color-tel: rgba(37, 211, 102, 0.4);
+            --color-email: rgba(234, 67, 53, 0.4);
+            --color-pec: rgba(0, 74, 153, 0.4);
             --grad-tl: linear-gradient(135deg, #25D366, #128C7E);
             --grad-pc: linear-gradient(135deg, #004a99, #001a33);
             --grad-em: linear-gradient(135deg, #ea4335, #c5221f);
@@ -28,17 +31,23 @@
             margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: var(--custom-bg);
             font-family: 'Montserrat', sans-serif;
-            overflow: hidden; -webkit-user-select: none; user-select: none;
+            overflow: hidden !important; 
+            -webkit-user-select: none; user-select: none;
+            touch-action: none;
         }
 
+        /* Preloader */
         #preloader { position: fixed; inset: 0; background-color: var(--bg-deep); display: flex; justify-content: center; align-items: center; z-index: 50000; transition: opacity 0.8s ease-out, visibility 0.8s; }
         .loader-wrap { position: relative; display: flex; justify-content: center; align-items: center; width: 150px; height: 150px; }
         .logo-mask-pre { width: 65px; height: 65px; background-color: #ffffff; -webkit-mask: url('img/Simbolo-rossini-b.png') center/contain no-repeat; mask: url('img/Simbolo-rossini-b.png') center/contain no-repeat; z-index: 2; animation: pulse 2s infinite alternate; }
-        .back-glow-pre { position: absolute; width: 15px; height: 15px; background: var(--gold-brand); border-radius: 50%; box-shadow: 0 0 70px 35px var(--gold-glow); animation: glowPulse 3s infinite ease-in-out; }
+        .back-glow-pre { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 15px; height: 15px; background: var(--gold-brand); border-radius: 50%; box-shadow: 0 0 70px 35px var(--gold-glow); animation: glowPulse 3s infinite ease-in-out; }
         @keyframes pulse { from { transform: scale(1); opacity: 0.8; } to { transform: scale(1.08); opacity: 1; } }
         @keyframes glowPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
         body.loaded #preloader { opacity: 0; visibility: hidden; }
 
+        .tel-icon-svg { width: 1.1em; height: 1.1em; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; vertical-align: middle; }
+
+        /* --- MODALITÀ DESKTOP (BLOCCATA) --- */
         @media (min-width: 1025px) {
             .main-container { display: flex; width: 100%; height: 100vh; position: relative; z-index: 2; }
             .side-accent { width: 35%; background-color: var(--bg-deep); display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 20; box-shadow: 15px 0 40px rgba(0,0,0,0.4); }
@@ -56,103 +65,98 @@
             .subtitle-main { font-size: 1rem; color: var(--bg-deep); margin: 8px 0 4vh; max-width: 480px; line-height: 1.5; }
             .btn-container { display: flex; gap: 20px; width: 100%; max-width: 800px; }
             .btn-desk { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px 15px; border: 1px solid rgba(27, 31, 43, 0.1); border-radius: 12px; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); cursor: pointer; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; }
-            .btn-desk i { font-size: 1.4rem; margin-bottom: 12px; color: var(--bg-deep); transition: all 0.3s ease; }
+            .btn-desk i, .btn-desk svg { font-size: 1.4rem; margin-bottom: 12px; color: var(--bg-deep); transition: all 0.3s ease; }
+            .btn-desk svg { margin-right: 0; width: 1.4rem; height: 1.4rem; stroke-width: 2.2; paint-order: stroke fill; }
             .btn-desk span { font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--bg-deep); transition: all 0.3s ease; }
             .btn-desk:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); border-color: var(--gold-brand); background: white; }
-            .btn-desk:hover i { transform: scale(1.1) rotate(8deg); color: var(--gold-brand); }
+            .btn-desk:hover i, .btn-desk:hover svg { transform: scale(1.1) rotate(8deg); color: var(--gold-brand); }
             .btn-desk:hover span { color: var(--gold-brand); }
             .standard-content-box { display: none; }
             .flip-container { width: 120px; height: 120px; }
-            .flip-back i { font-size: 80px; }
+            .flip-back i, .flip-back svg { height: 100px; width: 100px; font-size: 100px; }
         }
 
+        /* --- MODALITÀ MOBILE (CORRETTA) --- */
         @media (max-width: 1024px) {
             .main-container { display: none; }
             body { display: flex; justify-content: center; align-items: flex-start; }
             .bottom-pattern { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: 25vh; background-image: url('img/pattern-1.png'); background-size: contain; background-position: bottom center; background-repeat: no-repeat; z-index: 1; pointer-events: none; }
-            .standard-content-box { position: relative; z-index: 10; opacity: 0; width: 80% !important; height: 100vh; display: flex; flex-direction: column; align-items: stretch !important; padding-top: calc(4vh + env(safe-area-inset-top)); box-sizing: border-box; transition: all 1s cubic-bezier(0.22, 1, 0.36, 1) 1.5s; }
+            
+            /* BOX MOBILE: 100% width e padding laterale per allineare testi e tasti senza tagliare ombre */
+            .standard-content-box { 
+                position: relative; z-index: 10; opacity: 0; width: 100% !important; 
+                height: 100vh; display: flex; flex-direction: column; align-items: stretch; 
+                padding: calc(4vh + env(safe-area-inset-top)) 7.5% 0; /* Padding crea il margine visivo */
+                box-sizing: border-box; transition: opacity 1s ease 1.5s; 
+                overflow: visible !important; /* IMPORTANTE: permette all'ombra di "uscire" dai tasti */
+            }
             body.loaded .standard-content-box { opacity: 1; }
+            
             .logo-mobile { width: clamp(100px, 15vh, 130px); height: auto; align-self: flex-start; }
             .piva-mobile { font-size: 0.6rem; color: #888; margin-top: 5px; font-weight: 300; align-self: flex-start; }
             h1 { margin: 3vh 0 0; font-size: clamp(1.1rem, 3.2vh, 1.45rem); font-weight: 600; color: #000; text-transform: uppercase; line-height: 1.25; }
             .subtitle-top-mob { font-size: clamp(0.7rem, 1.7vh, 0.8rem); font-weight: 300; color: #666; margin: 2px 0 4vh; }
-            .section-title-mob { font-size: clamp(0.75rem, 1.8vh, 0.8rem); font-weight: 600; color: #000; margin: 0; }
+            .section-title-mob { font-size: clamp(0.75rem, 1.8vh, 0.8rem); font-weight: 600; color: #000; }
             .subtitle-main-mob { font-size: clamp(0.75rem, 1.8vh, 0.8rem); font-weight: 300; color: #000; line-height: 1.4; margin: 2px 0 4vh; }
             .btn-label { font-size: clamp(0.75rem, 1.8vh, 0.8rem); font-weight: 600; color: #000; margin-bottom: 8px; text-transform: lowercase; }
-            .btn-container-mob { display: flex; flex-direction: column; gap: 1.2vh; width: 100% !important; }
-            .btn-mob { position: relative; display: flex; align-items: center; justify-content: center; padding: 1.4vh 0; border-radius: 16px; border: 0.6px solid #000; background-color: var(--custom-bg); color: #000; font-size: 0.9rem; font-weight: 300; cursor: pointer; transition: 0.3s; z-index: 10; width: 100% !important; box-sizing: border-box !important; }
-            .btn-mob i { margin-right: 12px; }
-            .flip-container { width: 75px; height: 75px; }
-            .flip-back i { font-size: 55px; }
+            
+            /* Tasti a larghezza piena rispetto al contenitore (che ha già i margini) */
+            .btn-container-mob { display: flex; flex-direction: column; gap: 1.2vh; width: 100% !important; align-self: center; } 
+            
+            .btn-mob { 
+                position: relative; display: flex; align-items: center; justify-content: center; 
+                padding: 1.4vh 0; border-radius: 16px; border: 1.2px solid #000; 
+                background-color: transparent; color: #000; font-size: 0.9rem; font-weight: 300; 
+                transition: all 0.4s ease; z-index: 10; width: 100% !important; box-sizing: border-box !important; gap: 15px; 
+            }
+
+            .btn-mob.active-glow-tel { border-color: #25D366 !important; box-shadow: 0 0 10px var(--color-tel); transform: scale(1.01); }
+            .btn-mob.active-glow-email { border-color: #ea4335 !important; box-shadow: 0 0 10px var(--color-email); transform: scale(1.01); }
+            .btn-mob.active-glow-pec { border-color: #004a99 !important; box-shadow: 0 0 10px var(--color-pec); transform: scale(1.01); }
+            
+            @media screen and (orientation: landscape) {
+                .bottom-pattern { display: none !important; }
+                .standard-content-box { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; padding: 0 5% !important; transition: none !important; }
+                .header-block { position: absolute; top: 15px; left: 5%; }
+                .text-block-1 { flex: 1.3; text-align: left; }
+                h1 { font-size: 1.2rem; margin-top: 20px; }
+                .content-group { flex: 0.8; display: flex; flex-direction: column; align-items: stretch; }
+                .btn-mob { padding: 10px 0; border-radius: 12px; font-size: 0.8rem; gap: 10px; }
+            }
         }
 
         #ripple { position: fixed; width: 1px; height: 1px; border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%) scale(0); transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         #ripple.expanding { transform: translate(-50%, -50%) scale(4500); }
-        
-        #overlay-content { 
-            position: fixed; 
-            inset: 0; 
-            display: none; 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 10000; 
-            opacity: 0; 
-            transition: opacity 0.5s; 
-            background: rgba(0,0,0,0); 
-        }
+        #overlay-content { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; z-index: 10000; opacity: 0; transition: opacity 0.5s; background: transparent; }
         #overlay-content.active { display: flex; opacity: 1; }
         .close-overlay { position: absolute; top: 40px; right: 40px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 10005; }
-        
-        .flip-container { position: relative; perspective: 1000px; z-index: 10000; opacity: 0; transform: scale(0.5); transition: all 0.5s ease; }
+        .flip-container { position: relative; perspective: 1000px; z-index: 10000; opacity: 0; transform: scale(0.5); transition: 0.5s; width: 120px; height: 120px; }
+        @media (max-width: 1024px) { .flip-container { width: 75px; height: 75px; } }
         .flip-container.show-logo { opacity: 1; transform: scale(1); }
         .flip-card { position: relative; width: 100%; height: 100%; transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1); transform-style: preserve-3d; }
         .flip-card.is-flipped { transform: rotateY(180deg); }
         .flip-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; }
         .flip-front img { width: 100%; filter: brightness(0) invert(1); }
-        .flip-back { transform: rotateY(180deg); }
-        .flip-back i { color: white !important; }
+        .flip-back { transform: rotateY(180deg); display: flex; justify-content: center; align-items: center; }
+        .flip-back i, .flip-back svg { color: white !important; }
 
         #desktop-phone-hub {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -40%) scale(0.85);
-            width: 340px; 
-            padding: 40px 30px;
-            background: rgba(255, 255, 255, 0.15); 
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 35px;
-            text-align: center;
-            z-index: 10010;
-            display: none;
-            opacity: 0;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.85);
+            width: 340px; padding: 40px 30px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border-radius: 35px; text-align: center; z-index: 10010; display: none; opacity: 0; box-shadow: 0 20px 50px rgba(0,0,0,0.15); transition: all 0.5s ease;
         }
-
-        #desktop-phone-hub.show-anim { 
-            opacity: 1; 
-            transform: translate(-50%, -50%) scale(1); 
-        }
-
-        .hub-title { font-weight: 800; font-size: 1.4rem; color: white; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .hub-subtitle { font-weight: 400; font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-bottom: 25px; letter-spacing: 1px; line-height: 1.4; }
-        .qr-box { background: white; padding: 12px; border-radius: 20px; display: inline-block; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        #desktop-phone-hub.show-anim { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .hub-title { font-weight: 800; font-size: 1.4rem; color: white !important; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
+        .hub-subtitle { font-weight: 400; font-size: 0.85rem; color: white !important; opacity: 0.9; margin-bottom: 20px; letter-spacing: 1px; line-height: 1.4; }
+        .qr-box { background: white; padding: 12px; border-radius: 20px; display: inline-block; margin-bottom: 25px; }
         .qr-box img { width: 160px; height: 160px; display: block; filter: none !important; border-radius: 10px; }
-        .hub-label { font-size: 0.7rem; text-transform: uppercase; color: rgba(255,255,255,0.7); letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
-        .hub-number { font-weight: 700; font-size: 1.8rem; color: white; letter-spacing: 1.5px; text-shadow: 0 2px 15px rgba(0,0,0,0.2); }
-        .hub-footer { margin-top: 25px; font-size: 0.7rem; font-weight: 600; color: white; opacity: 0.6; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; }
+        .hub-label { font-size: 0.7rem; text-transform: uppercase; color: white !important; opacity: 0.8; letter-spacing: 2px; margin-bottom: 5px; font-weight: 600; }
+        .hub-number { font-weight: 700; font-size: 1.8rem; color: white !important; letter-spacing: 1.5px; }
+        .hub-footer { margin-top: 25px; font-size: 0.7rem; font-weight: 600; color: white !important; opacity: 0.6; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="preloader">
-        <div class="loader-wrap">
-            <div class="back-glow-pre"></div>
-            <div class="logo-mask-pre"></div>
-        </div>
-    </div>
+    <div id="preloader"><div class="loader-wrap"><div class="back-glow-pre"></div><div class="logo-mask-pre"></div></div></div>
     <div id="ripple"></div>
 
     <div class="main-container">
@@ -171,12 +175,13 @@
             </div>
             <div class="btn-container anim-item delay-3">
                 <div class="btn-desk" onclick="launchApp('tel:3470780437', 'var(--grad-tl)', 'fas fa-phone')">
-                    <i class="fas fa-phone"></i><span>TELEFONO</span>
+                    <svg class="tel-icon-svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span>TELEFONO</span>
                 </div>
-                <div class="btn-desk" onclick="launchApp('mailto:rossinisalvatore7@gmail.com', 'var(--grad-em)', 'far fa-envelope')">
+                <div class="btn-desk" onclick="launchApp('https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCKCBkQqMVhlsJQwhMqwLNwkZLVHfqwBwwqrTMHPVwxVFTBQbkFnBpBLqlcNXzDRzXHPhgdq', 'var(--grad-em)', 'far fa-envelope')">
                     <i class="far fa-envelope"></i><span>EMAIL</span>
                 </div>
-                <div class="btn-desk" onclick="launchApp('mailto:rossinismart@pec.it', 'var(--grad-pc)', 'far fa-envelope-open')">
+                <div class="btn-desk" onclick="launchApp('https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJNqstXHNsDBqhMGgkbnClKmhkMjgtnBxBxdKJBvLQXZmFdZfQrljBmnkbtdVTPDqlvpnNq', 'var(--grad-pc)', 'far fa-envelope-open')">
                     <i class="far fa-envelope-open"></i><span>PEC</span>
                 </div>
             </div>
@@ -192,21 +197,22 @@
         <div class="text-block-1">
             <h1>SOLUZIONI<br>EFFICACI PER LA<br>TUA REALTÀ</h1>
             <p class="subtitle-top-mob">Innovazione e tecnologia</p>
-        </div>
-        <div class="text-block-2">
-            <p class="section-title-mob">Contatto Diretto</p>
-            <p class="subtitle-main-mob">Realizziamo la migliore soluzione<br>per la tua azienda</p>
+            <div class="text-block-2">
+                <p class="section-title-mob">Contatto Diretto</p>
+                <p class="subtitle-main-mob">Realizziamo la migliore soluzione<br>per la tua azienda</p>
+            </div>
         </div>
         <div class="content-group">
             <div class="btn-label">contattami</div>
             <div class="btn-container-mob">
-                <div class="btn-mob" onclick="launchApp('tel:3470780437', 'var(--grad-tl)', 'fas fa-phone')">
-                    <i class="fas fa-phone"></i> TELEFONO
+                <div id="btn-tel" class="btn-mob" onclick="launchApp('tel:3470780437', 'var(--grad-tl)', 'fas fa-phone')">
+                    <svg class="tel-icon-svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    TELEFONO
                 </div>
-                <div class="btn-mob" onclick="launchApp('mailto:rossinisalvatore7@gmail.com', 'var(--grad-em)', 'far fa-envelope')">
+                <div id="btn-email" class="btn-mob" onclick="launchApp('mailto:rossinisalvatore7@gmail.com', 'var(--grad-em)', 'far fa-envelope')">
                     <i class="far fa-envelope"></i> EMAIL
                 </div>
-                <div class="btn-mob" onclick="launchApp('mailto:rossinismart@pec.it', 'var(--grad-pc)', 'far fa-envelope-open')">
+                <div id="btn-pec" class="btn-mob" onclick="launchApp('mailto:rossinismart@pec.it', 'var(--grad-pc)', 'far fa-envelope-open')">
                     <i class="far fa-envelope-open"></i> PEC
                 </div>
             </div>
@@ -218,15 +224,13 @@
         <div class="flip-container" id="flip-cont">
             <div class="flip-card" id="card">
                 <div class="flip-face flip-front"><img src="img/Simbolo-rossini-b.png"></div>
-                <div class="flip-face flip-back"><i id="overlay-icon"></i></div>
+                <div class="flip-face flip-back" id="overlay-icon"></div>
             </div>
         </div>
         <div id="desktop-phone-hub">
             <div class="hub-title">Smart Contact</div>
-            <div class="hub-subtitle">Scansiona il codice QR <br>per scrivermi su WhatsApp</div>
-            <div class="qr-box">
-                <img src="img/Il_mio_codice_QR_2-1024 (1).png" alt="QR">
-            </div>
+            <p class="hub-subtitle">Scansiona il codice QR <br>per scrivermi su WhatsApp</p>
+            <div class="qr-box"><img src="img/Il_mio_codice_QR_2-1024 (1).png" alt="QR"></div>
             <div class="hub-label">Oppure digita per chiamare:</div>
             <div class="hub-number">+39 3470780437</div>
             <div class="hub-footer">Rossini - Smart Industry</div>
@@ -234,9 +238,20 @@
     </div>
 
     <script>
-        window.addEventListener('load', () => { setTimeout(() => { document.body.classList.add('loaded'); }, 2000); });
+        window.addEventListener('load', () => { setTimeout(() => { document.body.classList.add('loaded'); startAutoGlow(); }, 2000); });
+
+        function startAutoGlow() {
+            const btns = [ { id: 'btn-tel', class: 'active-glow-tel' }, { id: 'btn-email', class: 'active-glow-email' }, { id: 'btn-pec', class: 'active-glow-pec' } ];
+            let index = 0;
+            setInterval(() => {
+                btns.forEach(b => { const el = document.getElementById(b.id); if(el) el.classList.remove(b.class); });
+                const currentEl = document.getElementById(btns[index].id);
+                if(currentEl) currentEl.classList.add(btns[index].class);
+                index = (index + 1) % btns.length;
+            }, 2000);
+        }
+
         let appTimer;
-        
         function launchApp(url, gradient, iconClass) {
             const ripple = document.getElementById('ripple');
             const overlay = document.getElementById('overlay-content');
@@ -248,13 +263,12 @@
             const isDesktop = window.innerWidth > 1024;
             let finalUrl = url;
 
-            if (isDesktop) {
-                if (url.includes('rossinisalvatore7@gmail.com')) {
-                    finalUrl = "https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCKCBkQqMVhlsJQwhMqwLNwkZLVHfqwBwwqrTMHPVwxVFTBQbkFnBpBLqlcNXzDRzXHPhgdq";
-                } else if (url.includes('rossinismart@pec.it')) {
-                    finalUrl = "https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJNqstXHNsDBqhMGgkbnClKmhkMjgtnBxBxdKJBvLQXZmFdZfQrljBmnkbtdVTPDqlvpnNq";
-                } else if (url.startsWith('tel:')) { finalUrl = null; }
-            }
+            if (!isDesktop) {
+                if (url.includes('compose=')) {
+                    if (url.includes('rossinisalvatore7@gmail.com')) finalUrl = 'mailto:rossinisalvatore7@gmail.com';
+                    else if (url.includes('rossinismart@pec.it')) finalUrl = 'mailto:rossinismart@pec.it';
+                }
+            } else { if (url.startsWith('tel:')) finalUrl = null; }
 
             const gradValue = getComputedStyle(document.documentElement).getPropertyValue(gradient.replace('var(','').replace(')','')).trim();
             ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
@@ -262,7 +276,13 @@
             
             setTimeout(() => {
                 overlay.style.display = 'flex';
-                overlayIcon.className = iconClass;
+                const iconSize = isDesktop ? "100px" : "60px";
+                if(iconClass === 'fas fa-phone') {
+                    overlayIcon.innerHTML = `<svg class="tel-icon-svg" style="width:${iconSize}; height:${iconSize}; color:white; margin-right:0;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
+                } else {
+                    overlayIcon.innerHTML = `<i class="${iconClass}" style="color:white; font-size:${iconSize}; line-height:1;"></i>`;
+                }
+                
                 setTimeout(() => { 
                     overlay.classList.add('active'); 
                     flipCont.classList.add('show-logo'); 
@@ -272,15 +292,14 @@
                             setTimeout(() => {
                                 flipCont.style.opacity = "0";
                                 setTimeout(() => {
-                                    flipCont.style.display = "none";
-                                    hub.style.display = "block";
+                                    flipCont.style.display = "none"; hub.style.display = "block";
                                     setTimeout(() => { hub.classList.add('show-anim'); }, 50);
                                 }, 400);
                             }, 1200); 
                         } else if (finalUrl) {
-                            appTimer = setTimeout(() => { window.location.href = finalUrl; }, 1500);
+                            appTimer = setTimeout(() => { window.location.href = finalUrl; }, 1000);
                         }
-                    }, 1000); 
+                    }, 800); 
                 }, 50);
             }, 400);
         }
@@ -290,18 +309,13 @@
             const overlay = document.getElementById('overlay-content');
             const hub = document.getElementById('desktop-phone-hub');
             const flipCont = document.getElementById('flip-cont');
-
             hub.classList.remove('show-anim');
             overlay.classList.remove('active');
-
             setTimeout(() => {
-                overlay.style.display = 'none';
-                hub.style.display = 'none';
+                overlay.style.display = 'none'; hub.style.display = 'none';
                 document.getElementById('ripple').classList.remove('expanding');
                 document.getElementById('card').classList.remove('is-flipped');
-                flipCont.classList.remove('show-logo');
-                flipCont.style.display = "block";
-                flipCont.style.opacity = "1";
+                flipCont.classList.remove('show-logo'); flipCont.style.display = "block"; flipCont.style.opacity = "1";
             }, 500);
         }
     </script>
